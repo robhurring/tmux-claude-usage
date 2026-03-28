@@ -160,9 +160,9 @@ set -g status-right '#{claude_model} (#{claude_version}) | 5h:#{claude_5h_color}
 
 ![Kitchen sink](.assets/images/4-sink.png)
 
-### Real-world — context/rates with subtle colors
+### Compact 2
 
-Subdued low-usage colors so the numbers fade into the bar until they matter. Orange Claude icon, dim separators, percentages only pop on warning/critical thresholds.
+`Context / 5h / 7d` - out of the way, enough context.
 
 ```tmux
 set -g @claude_usage_color_low "colour247"
