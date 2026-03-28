@@ -3,29 +3,44 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/scripts/helpers.sh"
 
-# Interpolation: format strings → script commands
-five_h_percent="#($CURRENT_DIR/scripts/5h_percent.sh)"
-seven_d_percent="#($CURRENT_DIR/scripts/7d_percent.sh)"
-cost="#($CURRENT_DIR/scripts/cost.sh)"
-model="#($CURRENT_DIR/scripts/model.sh)"
-usage="#($CURRENT_DIR/scripts/usage.sh)"
-cache_age="#($CURRENT_DIR/scripts/cache_age.sh)"
+FIELD="$CURRENT_DIR/scripts/field.sh"
+USAGE="$CURRENT_DIR/scripts/usage.sh"
+AGE="$CURRENT_DIR/scripts/cache_age.sh"
 
-five_h_percent_interpolation="\\#{claude_5h_percent}"
-seven_d_percent_interpolation="\\#{claude_7d_percent}"
-cost_interpolation="\\#{claude_cost}"
-model_interpolation="\\#{claude_model}"
-usage_interpolation="\\#{claude_usage}"
-cache_age_interpolation="\\#{claude_cache_age}"
+# Interpolation: format strings → script commands
+# format: field.sh <jq_path> [format]
+declare -A interpolations=(
+  # rate limits
+  ["claude_5h_percent"]=".rate_limits.five_hour.used_percentage percent"
+  ["claude_7d_percent"]=".rate_limits.seven_day.used_percentage percent"
+  # cost
+  ["claude_cost"]=".cost.total_cost_usd cost"
+  ["claude_lines_added"]=".cost.total_lines_added"
+  ["claude_lines_removed"]=".cost.total_lines_removed"
+  # context
+  ["claude_context_percent"]=".context_window.used_percentage percent"
+  ["claude_context_remaining"]=".context_window.remaining_percentage percent"
+  ["claude_exceeds_200k"]=".exceeds_200k_tokens"
+  # session
+  ["claude_model"]=".model.display_name"
+  ["claude_model_id"]=".model.id"
+  ["claude_version"]=".version"
+  ["claude_cwd"]=".cwd"
+  ["claude_project"]=".workspace.project_dir"
+)
 
 do_interpolation() {
   local output="$1"
-  output="${output/$five_h_percent_interpolation/$five_h_percent}"
-  output="${output/$seven_d_percent_interpolation/$seven_d_percent}"
-  output="${output/$cost_interpolation/$cost}"
-  output="${output/$model_interpolation/$model}"
-  output="${output/$usage_interpolation/$usage}"
-  output="${output/$cache_age_interpolation/$cache_age}"
+
+  for token in "${!interpolations[@]}"; do
+    local args="${interpolations[$token]}"
+    output="${output//\#\{$token\}/#($FIELD $args)}"
+  done
+
+  # Special scripts (not simple field lookups)
+  output="${output//\#\{claude_usage\}/#($USAGE)}"
+  output="${output//\#\{claude_cache_age\}/#($AGE)}"
+
   echo "$output"
 }
 

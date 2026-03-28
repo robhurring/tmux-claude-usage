@@ -59,7 +59,7 @@ _claude_json_extract() {
 
   case "$cmd" in
     jq)
-      jq -r "$expr // empty" 2>/dev/null
+      jq -r "($expr) | if . == null then empty elif . == false then \"false\" elif . == true then \"true\" else tostring end" 2>/dev/null
       ;;
     python3)
       python3 -c "
