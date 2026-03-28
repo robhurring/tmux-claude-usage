@@ -71,7 +71,9 @@ set -g status-right '#{claude_usage} | %H:%M'
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_5h_percent}` | `24%` | 5-hour rolling window usage |
+| `#{claude_5h_color}` | `24%` | 5-hour usage with color (green/yellow/red) |
 | `#{claude_7d_percent}` | `41%` | 7-day rolling window usage |
+| `#{claude_7d_color}` | `41%` | 7-day usage with color (green/yellow/red) |
 
 ### Cost
 
@@ -86,6 +88,7 @@ set -g status-right '#{claude_usage} | %H:%M'
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_context_percent}` | `63%` | Context window used |
+| `#{claude_context_color}` | `63%` | Context usage with color (green/yellow/red) |
 | `#{claude_context_remaining}` | `37%` | Context window remaining |
 | `#{claude_exceeds_200k}` | `200k+` | Configurable output based on 200k threshold |
 
@@ -113,6 +116,13 @@ set -g @claude_usage_format "%icon%%model% 5h:%5h% 7d:%7d%"
 
 # What to show when there's no cached data (default: empty/hidden)
 set -g @claude_usage_no_data ""
+
+# Color thresholds for #{claude_*_color} tokens
+set -g @claude_usage_threshold_mid "50"   # yellow above this (default: 50)
+set -g @claude_usage_threshold_high "80"  # red above this (default: 80)
+set -g @claude_usage_color_low "colour2"  # green (default: colour2)
+set -g @claude_usage_color_mid "colour3"  # yellow (default: colour3)
+set -g @claude_usage_color_high "colour1" # red (default: colour1)
 
 # What to show when context exceeds 200k tokens (default: "200k+")
 set -g @claude_usage_over_200k "⚠️ "

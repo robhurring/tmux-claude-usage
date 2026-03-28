@@ -103,6 +103,31 @@ _claude_format_percent() {
   printf '%.0f%%' "$val"
 }
 
+_claude_format_color_percent() {
+  local val="$1"
+  [ -z "$val" ] && return
+
+  local threshold_mid threshold_high color_low color_mid color_high
+  threshold_mid=$(get_tmux_option "@claude_usage_threshold_mid" "50")
+  threshold_high=$(get_tmux_option "@claude_usage_threshold_high" "80")
+  color_low=$(get_tmux_option "@claude_usage_color_low" "colour2")
+  color_mid=$(get_tmux_option "@claude_usage_color_mid" "colour3")
+  color_high=$(get_tmux_option "@claude_usage_color_high" "colour1")
+
+  local int_val color
+  int_val=$(printf '%.0f' "$val")
+
+  if [ "$int_val" -ge "$threshold_high" ] 2>/dev/null; then
+    color="$color_high"
+  elif [ "$int_val" -ge "$threshold_mid" ] 2>/dev/null; then
+    color="$color_mid"
+  else
+    color="$color_low"
+  fi
+
+  printf '#[fg=%s]%.0f%%#[default]' "$color" "$val"
+}
+
 _claude_format_cost() {
   local val="$1"
   [ -z "$val" ] && return

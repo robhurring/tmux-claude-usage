@@ -12,8 +12,9 @@ val=$(_claude_read_field "$expr")
 [ -z "$val" ] && exit 0
 
 case "$format" in
-  percent) _claude_format_percent "$val" ;;
-  cost)    _claude_format_cost "$val" ;;
-  tokens)  _claude_format_tokens "$val" ;;
-  *)       echo "$val" ;;
+  percent)       _claude_format_percent "$val" ;;
+  color_percent) _claude_format_color_percent "$val" ;;
+  cost)          _claude_format_cost "$val" ;;
+  tokens)        _claude_format_tokens "$val" ;;
+  *)             echo "$val" ;;
 esac

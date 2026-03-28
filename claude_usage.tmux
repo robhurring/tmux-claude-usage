@@ -13,13 +13,16 @@ EXCEEDS_200K="$CURRENT_DIR/scripts/exceeds_200k.sh"
 declare -A interpolations=(
   # rate limits
   ["claude_5h_percent"]=".rate_limits.five_hour.used_percentage percent"
+  ["claude_5h_color"]=".rate_limits.five_hour.used_percentage color_percent"
   ["claude_7d_percent"]=".rate_limits.seven_day.used_percentage percent"
+  ["claude_7d_color"]=".rate_limits.seven_day.used_percentage color_percent"
   # cost
   ["claude_cost"]=".cost.total_cost_usd cost"
   ["claude_lines_added"]=".cost.total_lines_added"
   ["claude_lines_removed"]=".cost.total_lines_removed"
   # context
   ["claude_context_percent"]=".context_window.used_percentage percent"
+  ["claude_context_color"]=".context_window.used_percentage color_percent"
   ["claude_context_remaining"]=".context_window.remaining_percentage percent"
   # session
   ["claude_model"]=".model.display_name"

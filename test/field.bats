@@ -84,6 +84,37 @@ setup() {
   [ "$output" = "" ]
 }
 
+# --- color_percent format ---
+
+@test "color_percent: low value gets green" {
+  # 23.5% rounds to 24 — below default mid threshold of 50
+  run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
+  [ "$status" -eq 0 ]
+  [ "$output" = '#[fg=colour2]24%#[default]' ]
+}
+
+@test "color_percent: mid value gets yellow" {
+  jq '.rate_limits.five_hour.used_percentage = 65' "$CLAUDE_USAGE_CACHE" > "$CLAUDE_USAGE_CACHE.tmp" \
+    && mv "$CLAUDE_USAGE_CACHE.tmp" "$CLAUDE_USAGE_CACHE"
+  run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
+  [ "$status" -eq 0 ]
+  [ "$output" = '#[fg=colour3]65%#[default]' ]
+}
+
+@test "color_percent: high value gets red" {
+  jq '.rate_limits.five_hour.used_percentage = 92' "$CLAUDE_USAGE_CACHE" > "$CLAUDE_USAGE_CACHE.tmp" \
+    && mv "$CLAUDE_USAGE_CACHE.tmp" "$CLAUDE_USAGE_CACHE"
+  run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
+  [ "$status" -eq 0 ]
+  [ "$output" = '#[fg=colour1]92%#[default]' ]
+}
+
+@test "color_percent: empty value returns empty" {
+  run bash "$DIR/scripts/field.sh" .nonexistent.field color_percent
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
 # --- exceeds_200k.sh ---
 
 @test "exceeds_200k: returns under_200k default when false" {
