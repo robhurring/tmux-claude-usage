@@ -64,9 +64,9 @@ set -g status-right '#{claude_model} 5h:#{claude_5h_percent}%% 7d:#{claude_7d_pe
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_5h_percent}` | `24` | 5-hour rolling window usage |
-| `#{claude_5h_color}` | *(sets color)* | 5-hour color escape (green/yellow/red) |
+| `#{claude_5h_color}` | `#[fg=colour2]` | 5-hour color escape (green/yellow/red) |
 | `#{claude_7d_percent}` | `41` | 7-day rolling window usage |
-| `#{claude_7d_color}` | *(sets color)* | 7-day color escape (green/yellow/red) |
+| `#{claude_7d_color}` | `#[fg=colour2]` | 7-day color escape (green/yellow/red) |
 
 ### Cost
 
@@ -81,7 +81,7 @@ set -g status-right '#{claude_model} 5h:#{claude_5h_percent}%% 7d:#{claude_7d_pe
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_context_percent}` | `63` | Context window used |
-| `#{claude_context_color}` | *(sets color)* | Context color escape (green/yellow/red) |
+| `#{claude_context_color}` | `#[fg=colour2]` | Context color escape (green/yellow/red) |
 | `#{claude_context_remaining}` | `37` | Context window remaining |
 | `#{claude_exceeds_200k}` | `200k+` | Configurable output based on 200k threshold |
 
