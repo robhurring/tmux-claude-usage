@@ -2,10 +2,10 @@
 # MITM Claude Code statusline JSON: cache it, pipe through to user's command.
 #
 # Usage in ~/.claude/settings.json:
-#   "statusLine": { "type": "command", "command": "claude-usage-tee my-statusline-script" }
+#   "command": "$TMUX_PLUGIN_MANAGER_PATH/tmux-claude-usage/bin/claude-cache-usage my-statusline-script"
 #
 # Without a downstream command, just caches and passes through to stdout:
-#   "statusLine": { "type": "command", "command": "claude-usage-tee" }
+#   "command": "$TMUX_PLUGIN_MANAGER_PATH/tmux-claude-usage/bin/claude-cache-usage"
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/../scripts/helpers.sh"

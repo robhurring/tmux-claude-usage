@@ -25,7 +25,7 @@ Press `prefix + I` to install.
 
 ### 2. Configure Claude Code statusline
 
-In `~/.claude/settings.json`, wrap your existing statusline command with `claude-usage-tee`:
+In `~/.claude/settings.json`, wrap your existing statusline command with `claude-cache-usage`:
 
 **If you have an existing statusline script:**
 
@@ -33,7 +33,7 @@ In `~/.claude/settings.json`, wrap your existing statusline command with `claude
 {
   "statusLine": {
     "type": "command",
-    "command": "claude-usage-tee your-existing-statusline-script"
+    "command": "$TMUX_PLUGIN_MANAGER_PATH/tmux-claude-usage/bin/claude-cache-usage your-existing-statusline-script"
   }
 }
 ```
@@ -44,12 +44,12 @@ In `~/.claude/settings.json`, wrap your existing statusline command with `claude
 {
   "statusLine": {
     "type": "command",
-    "command": "claude-usage-tee"
+    "command": "$TMUX_PLUGIN_MANAGER_PATH/tmux-claude-usage/bin/claude-cache-usage"
   }
 }
 ```
 
-`claude-usage-tee` transparently caches the JSON and pipes it through to your command. Your existing script receives the exact same stdin — nothing changes.
+`claude-cache-usage` transparently caches the JSON and pipes it through to your command. Your existing script receives the exact same stdin — nothing changes.
 
 ### 3. Add format strings to your status bar
 
@@ -66,6 +66,7 @@ set -g status-right '#{claude_usage} | %H:%M'
 | `#{claude_cost}` | `$1.23` | Session cost in USD |
 | `#{claude_model}` | `Opus` | Current model name |
 | `#{claude_usage}` | `Opus 5h:24% 7d:41%` | Combined format (configurable) |
+| `#{claude_cache_age}` | `4m` | Time since last cache update |
 
 ## Configuration
 
@@ -88,26 +89,17 @@ set -g @claude_usage_stale_seconds "600"
 
 ### Cache Location
 
-The cache file location is resolved in this order:
-
-1. `$CLAUDE_USAGE_CACHE` — explicit override
-2. `$XDG_CACHE_HOME/claude/usage.json` — XDG-compliant
-3. `~/.cache/claude/usage.json` — XDG default
-4. `~/.claude/usage-cache.json` — fallback
-
-Both `claude-usage-tee` and the tmux plugin scripts use the same resolution chain, so they always agree on the file path.
-
-To override, export the env var in your shell profile:
+By default the cache lives at `<plugin-dir>/claude-usage.json`. Override with `$CLAUDE_USAGE_CACHE`:
 
 ```bash
-export CLAUDE_USAGE_CACHE="$HOME/.my-custom-path/claude-usage.json"
+export CLAUDE_USAGE_CACHE="$HOME/claude-usage.json"
 ```
 
 ## How It Works
 
 ```
 Claude Code → statusline JSON on stdin
-  → claude-usage-tee → tee to cache file
+  → claude-cache-usage → tee to cache file
     → pipe through to your statusline script (unchanged)
 
 tmux status bar

@@ -3,9 +3,6 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/scripts/helpers.sh"
 
-# Make claude-usage-tee available on PATH for use in ~/.claude/settings.json
-tmux set-environment -g PATH "$CURRENT_DIR/bin:$PATH"
-
 # Interpolation: format strings → script commands
 five_h_percent="#($CURRENT_DIR/scripts/5h_percent.sh)"
 seven_d_percent="#($CURRENT_DIR/scripts/7d_percent.sh)"

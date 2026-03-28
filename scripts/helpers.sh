@@ -21,18 +21,13 @@ set_tmux_option() {
 }
 
 # --- Cache file resolution ---
-# $CLAUDE_USAGE_CACHE → $XDG_CACHE_HOME/claude/usage.json → ~/.cache/claude/usage.json → ~/.claude/usage-cache.json
+# Resolves to the plugin's own .cache/ directory by default.
+# Override with $CLAUDE_USAGE_CACHE if needed.
+
+PLUGIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 _claude_cache_file() {
-  if [ -n "$CLAUDE_USAGE_CACHE" ]; then
-    echo "$CLAUDE_USAGE_CACHE"
-  elif [ -n "$XDG_CACHE_HOME" ]; then
-    echo "$XDG_CACHE_HOME/claude/usage.json"
-  elif [ -d "$HOME/.cache" ]; then
-    echo "$HOME/.cache/claude/usage.json"
-  else
-    echo "$HOME/.claude/usage-cache.json"
-  fi
+  echo "${CLAUDE_USAGE_CACHE:-$PLUGIN_DIR/claude-usage.json}"
 }
 
 # --- JSON parser detection ---
