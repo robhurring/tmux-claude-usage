@@ -7,6 +7,6 @@
 
 **After completing work**, you MUST:
 1. Commit atomically with semantic messages (`feat:`, `fix:`, `docs:`, etc.)
-2. Only push to origin if the task requires a pull-request (L/XL tasks or when explicitly asked)
-3. Run the tests with `make test`
+2. Run the tests with `make test`
+3. Only push to origin if the task is significant enough to require a pull-request
 

@@ -59,14 +59,45 @@ set -g status-right '#{claude_usage} | %H:%M'
 
 ## Format Strings
 
+### Combined
+
+| Token | Example | Description |
+|-------|---------|-------------|
+| `#{claude_usage}` | `Opus 5h:24% 7d:41%` | Combined format (configurable) |
+| `#{claude_cache_age}` | `4m` | Time since last cache update |
+
+### Rate Limits
+
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_5h_percent}` | `24%` | 5-hour rolling window usage |
 | `#{claude_7d_percent}` | `41%` | 7-day rolling window usage |
+
+### Cost
+
+| Token | Example | Description |
+|-------|---------|-------------|
 | `#{claude_cost}` | `$1.23` | Session cost in USD |
-| `#{claude_model}` | `Opus` | Current model name |
-| `#{claude_usage}` | `Opus 5h:24% 7d:41%` | Combined format (configurable) |
-| `#{claude_cache_age}` | `4m` | Time since last cache update |
+| `#{claude_lines_added}` | `42` | Total lines added this session |
+| `#{claude_lines_removed}` | `17` | Total lines removed this session |
+
+### Context
+
+| Token | Example | Description |
+|-------|---------|-------------|
+| `#{claude_context_percent}` | `63%` | Context window used |
+| `#{claude_context_remaining}` | `37%` | Context window remaining |
+| `#{claude_exceeds_200k}` | `200k+` | Configurable output based on 200k threshold |
+
+### Session
+
+| Token | Example | Description |
+|-------|---------|-------------|
+| `#{claude_model}` | `Opus` | Current model display name |
+| `#{claude_model_id}` | `claude-opus-4-6` | Full model identifier |
+| `#{claude_version}` | `1.0.0` | Claude Code version |
+| `#{claude_cwd}` | `/Users/me/proj` | Current working directory |
+| `#{claude_project}` | `/Users/me/proj` | Workspace project directory |
 
 ## Configuration
 
@@ -82,6 +113,12 @@ set -g @claude_usage_format "%icon%%model% 5h:%5h% 7d:%7d%"
 
 # What to show when there's no cached data (default: empty/hidden)
 set -g @claude_usage_no_data ""
+
+# What to show when context exceeds 200k tokens (default: "200k+")
+set -g @claude_usage_over_200k "⚠️ "
+
+# What to show when context is under 200k tokens (default: empty/hidden)
+set -g @claude_usage_under_200k ""
 ```
 
 ### Cache Location
@@ -101,6 +138,14 @@ On the tmux side, the plugin scripts just read that cached JSON and spit out for
 ## Rate Limits
 
 The 5-hour and 7-day usage percentages are available for Claude Pro/Max subscribers. They reflect your rolling rate limit utilization as reported by Claude Code.
+
+## Development
+
+Requires [bats-core](https://github.com/bats-core/bats-core) for testing:
+
+```bash
+make test
+```
 
 ## License
 

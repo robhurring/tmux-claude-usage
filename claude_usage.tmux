@@ -6,6 +6,7 @@ source "$CURRENT_DIR/scripts/helpers.sh"
 FIELD="$CURRENT_DIR/scripts/field.sh"
 USAGE="$CURRENT_DIR/scripts/usage.sh"
 AGE="$CURRENT_DIR/scripts/cache_age.sh"
+EXCEEDS_200K="$CURRENT_DIR/scripts/exceeds_200k.sh"
 
 # Interpolation: format strings → script commands
 # format: field.sh <jq_path> [format]
@@ -20,7 +21,6 @@ declare -A interpolations=(
   # context
   ["claude_context_percent"]=".context_window.used_percentage percent"
   ["claude_context_remaining"]=".context_window.remaining_percentage percent"
-  ["claude_exceeds_200k"]=".exceeds_200k_tokens"
   # session
   ["claude_model"]=".model.display_name"
   ["claude_model_id"]=".model.id"
@@ -40,6 +40,7 @@ do_interpolation() {
   # Special scripts (not simple field lookups)
   output="${output//\#\{claude_usage\}/#($USAGE)}"
   output="${output//\#\{claude_cache_age\}/#($AGE)}"
+  output="${output//\#\{claude_exceeds_200k\}/#($EXCEEDS_200K)}"
 
   echo "$output"
 }

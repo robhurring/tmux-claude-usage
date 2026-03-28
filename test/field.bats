@@ -81,3 +81,28 @@ setup() {
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
+
+# --- exceeds_200k.sh ---
+
+@test "exceeds_200k: returns under_200k default when false" {
+  # Fixture has exceeds_200k_tokens: false
+  run bash "$DIR/scripts/exceeds_200k.sh"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "exceeds_200k: returns over_200k default when true" {
+  # Patch fixture to true
+  jq '.exceeds_200k_tokens = true' "$CLAUDE_USAGE_CACHE" > "$CLAUDE_USAGE_CACHE.tmp" \
+    && mv "$CLAUDE_USAGE_CACHE.tmp" "$CLAUDE_USAGE_CACHE"
+  run bash "$DIR/scripts/exceeds_200k.sh"
+  [ "$status" -eq 0 ]
+  [ "$output" = "200k+" ]
+}
+
+@test "exceeds_200k: missing cache returns under_200k default" {
+  rm "$CLAUDE_USAGE_CACHE"
+  run bash "$DIR/scripts/exceeds_200k.sh"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
