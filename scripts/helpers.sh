@@ -125,7 +125,7 @@ _claude_format_color_percent() {
     color="$color_low"
   fi
 
-  printf '#[fg=%s]%.0f' "$color" "$val"
+  printf '#[fg=%s]' "$color"
 }
 
 _claude_format_cost() {

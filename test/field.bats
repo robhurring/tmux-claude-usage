@@ -90,7 +90,7 @@ setup() {
   # 23.5% rounds to 24 — below default mid threshold of 50
   run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
   [ "$status" -eq 0 ]
-  [ "$output" = '#[fg=colour2]24' ]
+  [ "$output" = '#[fg=colour2]' ]
 }
 
 @test "color_percent: mid value gets yellow" {
@@ -98,7 +98,7 @@ setup() {
     && mv "$CLAUDE_USAGE_CACHE.tmp" "$CLAUDE_USAGE_CACHE"
   run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
   [ "$status" -eq 0 ]
-  [ "$output" = '#[fg=colour3]65' ]
+  [ "$output" = '#[fg=colour3]' ]
 }
 
 @test "color_percent: high value gets red" {
@@ -106,7 +106,7 @@ setup() {
     && mv "$CLAUDE_USAGE_CACHE.tmp" "$CLAUDE_USAGE_CACHE"
   run bash "$DIR/scripts/field.sh" .rate_limits.five_hour.used_percentage color_percent
   [ "$status" -eq 0 ]
-  [ "$output" = '#[fg=colour1]92' ]
+  [ "$output" = '#[fg=colour1]' ]
 }
 
 @test "color_percent: empty value returns empty" {

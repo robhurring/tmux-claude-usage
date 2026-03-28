@@ -64,9 +64,9 @@ set -g status-right '#{claude_model} 5h:#{claude_5h_percent}%% 7d:#{claude_7d_pe
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_5h_percent}` | `24` | 5-hour rolling window usage |
-| `#{claude_5h_color}` | `24` | 5-hour usage with color (green/yellow/red) |
+| `#{claude_5h_color}` | *(sets color)* | 5-hour color escape (green/yellow/red) |
 | `#{claude_7d_percent}` | `41` | 7-day rolling window usage |
-| `#{claude_7d_color}` | `41` | 7-day usage with color (green/yellow/red) |
+| `#{claude_7d_color}` | *(sets color)* | 7-day color escape (green/yellow/red) |
 
 ### Cost
 
@@ -81,7 +81,7 @@ set -g status-right '#{claude_model} 5h:#{claude_5h_percent}%% 7d:#{claude_7d_pe
 | Token | Example | Description |
 |-------|---------|-------------|
 | `#{claude_context_percent}` | `63` | Context window used |
-| `#{claude_context_color}` | `63` | Context usage with color (green/yellow/red) |
+| `#{claude_context_color}` | *(sets color)* | Context color escape (green/yellow/red) |
 | `#{claude_context_remaining}` | `37` | Context window remaining |
 | `#{claude_exceeds_200k}` | `200k+` | Configurable output based on 200k threshold |
 
@@ -128,7 +128,7 @@ export CLAUDE_USAGE_CACHE="$HOME/claude-usage.json"
 ### Minimal — model + 5h rate limit
 
 ```tmux
-set -g status-right '#{claude_model} #{claude_5h_color}%%#[default] | %H:%M'
+set -g status-right '#{claude_model} #{claude_5h_color}#{claude_5h_percent}%%#[default] | %H:%M'
 ```
 
 ![Minimal](.assets/images/1-minimal.png)
@@ -137,7 +137,7 @@ set -g status-right '#{claude_model} #{claude_5h_color}%%#[default] | %H:%M'
 
 ```tmux
 set -g @claude_usage_over_200k "⚠️ "
-set -g status-right '☍ #{claude_5h_color}%%#[default]/#{claude_7d_color}%%#[default]#{claude_exceeds_200k} | %H:%M'
+set -g status-right '☍ #{claude_5h_color}#{claude_5h_percent}%%#[default]/#{claude_7d_color}#{claude_7d_percent}%%#[default]#{claude_exceeds_200k} | %H:%M'
 ```
 
 ![Compact](.assets/images/2-compact.png)
@@ -150,7 +150,7 @@ set -g status-right '☍ #{claude_5h_color}%%#[default]/#{claude_7d_color}%%#[de
 set -g @claude_usage_color_low "colour247"
 set -g @claude_usage_color_mid "colour3"
 set -g @claude_usage_color_high "colour1"
-set -g status-right '#[fg=colour208]✻#[default] #{claude_context_color}#{claude_context_percent}%%#[fg=colour242]/#[default]#{claude_5h_color}%%#[fg=colour242]/#[default]#{claude_7d_color}%%#[default] | ...'
+set -g status-right '#[fg=colour208]✻#[default] #{claude_context_color}#{claude_context_percent}%%#[fg=colour242]/#[default]#{claude_5h_color}#{claude_5h_percent}%%#[fg=colour242]/#[default]#{claude_7d_color}#{claude_7d_percent}%%#[default] | ...'
 ```
 
 ![Real-world](.assets/images/5-compact-mine.png)
@@ -160,7 +160,7 @@ set -g status-right '#[fg=colour208]✻#[default] #{claude_context_color}#{claud
 
 ```tmux
 set -g @claude_usage_over_200k " ⚠️"
-set -g status-right '#{claude_model} | 5h:#{claude_5h_color}%%#[default] 7d:#{claude_7d_color}%%#[default] | #{claude_cost} | ctx:#{claude_context_color}%%#[default]#{claude_exceeds_200k} | %H:%M'
+set -g status-right '#{claude_model} | 5h:#{claude_5h_color}#{claude_5h_percent}%%#[default] 7d:#{claude_7d_color}#{claude_7d_percent}%%#[default] | #{claude_cost} | ctx:#{claude_context_color}#{claude_context_percent}%%#[default]#{claude_exceeds_200k} | %H:%M'
 ```
 
 ![Detailed](.assets/images/3-detailed.png)
@@ -169,7 +169,7 @@ set -g status-right '#{claude_model} | 5h:#{claude_5h_color}%%#[default] 7d:#{cl
 
 ```tmux
 set -g @claude_usage_over_200k " ⚠️"
-set -g status-right '#{claude_model} (#{claude_version}) | 5h:#{claude_5h_color}%%#[default] 7d:#{claude_7d_color}%%#[default] | #{claude_cost} +#{claude_lines_added}/-#{claude_lines_removed} | ctx:#{claude_context_color}%%#[default]#{claude_exceeds_200k} | #{claude_cache_age} | %H:%M'
+set -g status-right '#{claude_model} (#{claude_version}) | 5h:#{claude_5h_color}#{claude_5h_percent}%%#[default] 7d:#{claude_7d_color}#{claude_7d_percent}%%#[default] | #{claude_cost} +#{claude_lines_added}/-#{claude_lines_removed} | ctx:#{claude_context_color}#{claude_context_percent}%%#[default]#{claude_exceeds_200k} | #{claude_cache_age} | %H:%M'
 ```
 
 ![Kitchen sink](.assets/images/4-sink.png)
