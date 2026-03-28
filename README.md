@@ -160,6 +160,19 @@ set -g status-right '#{claude_model} (#{claude_version}) | 5h:#{claude_5h_color}
 
 ![Kitchen sink](.assets/images/4-sink.png)
 
+### Real-world — context/rates with subtle colors
+
+Subdued low-usage colors so the numbers fade into the bar until they matter. Orange Claude icon, dim separators, percentages only pop on warning/critical thresholds.
+
+```tmux
+set -g @claude_usage_color_low "colour247"
+set -g @claude_usage_color_mid "colour3"
+set -g @claude_usage_color_high "colour1"
+set -g status-right '#[fg=colour208]✻#[default] #{claude_context_color}#{claude_context_percent}%%#[fg=colour242]/#[default]#{claude_5h_color}%%#[fg=colour242]/#[default]#{claude_7d_color}%%#[default] | ...'
+```
+
+![Real-world](.assets/images/5-compact-mine.png)
+
 ## How It Works
 
 Claude Code already pipes JSON to your statusline script on every response. `claude-cache-usage` sits in the middle — it `tee`s that JSON off to a file before passing it through to your existing script. Your script never knows the difference.
