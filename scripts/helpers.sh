@@ -83,37 +83,14 @@ except (KeyError, TypeError, IndexError, json.JSONDecodeError):
 
 # --- Cache reading ---
 
-_claude_cache_is_stale() {
-  local cache_file="$1"
-  local stale_seconds
-  stale_seconds=$(get_tmux_option "@claude_usage_stale_seconds" "600")
-
-  [ ! -f "$cache_file" ] && return 0
-
-  local now file_mtime age
-  now=$(date +%s)
-
-  # BSD stat (macOS) vs GNU stat (Linux)
-  if stat -f %m "$cache_file" >/dev/null 2>&1; then
-    file_mtime=$(stat -f %m "$cache_file")
-  else
-    file_mtime=$(stat -c %Y "$cache_file")
-  fi
-
-  age=$((now - file_mtime))
-  [ "$age" -gt "$stale_seconds" ]
-}
-
 # Read a field from the cached JSON.
-# Returns empty string if cache is stale, missing, or parse fails.
+# Returns empty string if file missing or parse fails.
 _claude_read_field() {
   local expr="$1"
   local cache_file
   cache_file=$(_claude_cache_file)
 
-  if _claude_cache_is_stale "$cache_file"; then
-    return
-  fi
+  [ ! -f "$cache_file" ] && return
 
   _claude_json_extract "$expr" < "$cache_file"
 }

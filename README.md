@@ -82,9 +82,6 @@ set -g @claude_usage_format "%icon%%model% 5h:%5h% 7d:%7d%"
 
 # What to show when there's no cached data (default: empty/hidden)
 set -g @claude_usage_no_data ""
-
-# Seconds before cache is considered stale (default: 600)
-set -g @claude_usage_stale_seconds "600"
 ```
 
 ### Cache Location
@@ -97,17 +94,9 @@ export CLAUDE_USAGE_CACHE="$HOME/claude-usage.json"
 
 ## How It Works
 
-```
-Claude Code → statusline JSON on stdin
-  → claude-cache-usage → tee to cache file
-    → pipe through to your statusline script (unchanged)
+Claude Code already pipes JSON to your statusline script on every response. `claude-cache-usage` sits in the middle — it `tee`s that JSON off to a file before passing it through to your existing script. Your script never knows the difference.
 
-tmux status bar
-  → #{claude_5h_percent} etc.
-  → plugin scripts read cached JSON via jq/python3
-```
-
-The cache is refreshed automatically whenever Claude Code updates its statusline (after each assistant response). No periodic polling needed.
+On the tmux side, the plugin scripts just read that cached JSON and spit out formatted values. The cache updates every time Claude responds, so there's no polling or API calls involved.
 
 ## Rate Limits
 

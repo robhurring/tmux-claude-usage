@@ -2,14 +2,6 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/helpers.sh"
 
-cache_file=$(_claude_cache_file)
-
-# If cache is stale or missing, output nothing (or configured no-data string)
-if _claude_cache_is_stale "$cache_file"; then
-  get_tmux_option "@claude_usage_no_data" ""
-  exit 0
-fi
-
 # Read all fields
 icon=$(get_tmux_option "@claude_usage_icon" "")
 model=$(_claude_read_field '.model.display_name')
