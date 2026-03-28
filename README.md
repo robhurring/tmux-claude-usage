@@ -54,7 +54,7 @@ In `~/.claude/settings.json`, wrap your existing statusline command with `claude
 ### 3. Add format strings to your status bar
 
 ```tmux
-set -g status-right '#{claude_model} 5h:#{claude_5h_percent}% 7d:#{claude_7d_percent}% | %H:%M'
+set -g status-right '#{claude_model} 5h:#{claude_5h_percent}%% 7d:#{claude_7d_percent}%% | %H:%M'
 ```
 
 ## Format Strings
@@ -122,6 +122,43 @@ By default the cache lives at `<plugin-dir>/claude-usage.json`. Override with `$
 ```bash
 export CLAUDE_USAGE_CACHE="$HOME/claude-usage.json"
 ```
+
+## Examples
+
+### Minimal — model + 5h rate limit
+
+```tmux
+set -g status-right '#{claude_model} #{claude_5h_color}%%#[default] | %H:%M'
+```
+
+![Minimal](.assets/images/1-minimal.png)
+
+### Compact — colored rate limits with warning
+
+```tmux
+set -g @claude_usage_over_200k "⚠️ "
+set -g status-right '☍ #{claude_5h_color}%%#[default]/#{claude_7d_color}%%#[default]#{claude_exceeds_200k} | %H:%M'
+```
+
+![Compact](.assets/images/2-compact.png)
+
+### Detailed — model, rates, cost, and context
+
+```tmux
+set -g @claude_usage_over_200k " ⚠️"
+set -g status-right '#{claude_model} | 5h:#{claude_5h_color}%%#[default] 7d:#{claude_7d_color}%%#[default] | #{claude_cost} | ctx:#{claude_context_color}%%#[default]#{claude_exceeds_200k} | %H:%M'
+```
+
+![Detailed](.assets/images/3-detailed.png)
+
+### Kitchen sink — everything
+
+```tmux
+set -g @claude_usage_over_200k " ⚠️"
+set -g status-right '#{claude_model} (#{claude_version}) | 5h:#{claude_5h_color}%%#[default] 7d:#{claude_7d_color}%%#[default] | #{claude_cost} +#{claude_lines_added}/-#{claude_lines_removed} | ctx:#{claude_context_color}%%#[default]#{claude_exceeds_200k} | #{claude_cache_age} | %H:%M'
+```
+
+![Kitchen sink](.assets/images/4-sink.png)
 
 ## How It Works
 
