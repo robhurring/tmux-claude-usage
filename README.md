@@ -54,26 +54,19 @@ In `~/.claude/settings.json`, wrap your existing statusline command with `claude
 ### 3. Add format strings to your status bar
 
 ```tmux
-set -g status-right '#{claude_usage} | %H:%M'
+set -g status-right '#{claude_model} 5h:#{claude_5h_percent}% 7d:#{claude_7d_percent}% | %H:%M'
 ```
 
 ## Format Strings
-
-### Combined
-
-| Token | Example | Description |
-|-------|---------|-------------|
-| `#{claude_usage}` | `Opus 5h:24% 7d:41%` | Combined format (configurable) |
-| `#{claude_cache_age}` | `4m` | Time since last cache update |
 
 ### Rate Limits
 
 | Token | Example | Description |
 |-------|---------|-------------|
-| `#{claude_5h_percent}` | `24%` | 5-hour rolling window usage |
-| `#{claude_5h_color}` | `24%` | 5-hour usage with color (green/yellow/red) |
-| `#{claude_7d_percent}` | `41%` | 7-day rolling window usage |
-| `#{claude_7d_color}` | `41%` | 7-day usage with color (green/yellow/red) |
+| `#{claude_5h_percent}` | `24` | 5-hour rolling window usage |
+| `#{claude_5h_color}` | `24` | 5-hour usage with color (green/yellow/red) |
+| `#{claude_7d_percent}` | `41` | 7-day rolling window usage |
+| `#{claude_7d_color}` | `41` | 7-day usage with color (green/yellow/red) |
 
 ### Cost
 
@@ -87,15 +80,16 @@ set -g status-right '#{claude_usage} | %H:%M'
 
 | Token | Example | Description |
 |-------|---------|-------------|
-| `#{claude_context_percent}` | `63%` | Context window used |
-| `#{claude_context_color}` | `63%` | Context usage with color (green/yellow/red) |
-| `#{claude_context_remaining}` | `37%` | Context window remaining |
+| `#{claude_context_percent}` | `63` | Context window used |
+| `#{claude_context_color}` | `63` | Context usage with color (green/yellow/red) |
+| `#{claude_context_remaining}` | `37` | Context window remaining |
 | `#{claude_exceeds_200k}` | `200k+` | Configurable output based on 200k threshold |
 
 ### Session
 
 | Token | Example | Description |
 |-------|---------|-------------|
+| `#{claude_cache_age}` | `4m` | Time since last cache update |
 | `#{claude_model}` | `Opus` | Current model display name |
 | `#{claude_model_id}` | `claude-opus-4-6` | Full model identifier |
 | `#{claude_version}` | `1.0.0` | Claude Code version |
@@ -107,16 +101,6 @@ set -g status-right '#{claude_usage} | %H:%M'
 All options are set via tmux `set -g`:
 
 ```tmux
-# Icon prefix (e.g., nerdfont claude icon)
-set -g @claude_usage_icon "☍ "
-
-# Template for #{claude_usage} — available placeholders:
-# %icon%, %model%, %5h%, %7d%, %cost%
-set -g @claude_usage_format "%icon%%model% 5h:%5h% 7d:%7d%"
-
-# What to show when there's no cached data (default: empty/hidden)
-set -g @claude_usage_no_data ""
-
 # Color thresholds for #{claude_*_color} tokens
 set -g @claude_usage_threshold_mid "50"   # yellow above this (default: 50)
 set -g @claude_usage_threshold_high "80"  # red above this (default: 80)

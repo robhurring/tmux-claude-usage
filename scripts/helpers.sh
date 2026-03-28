@@ -100,7 +100,7 @@ _claude_read_field() {
 _claude_format_percent() {
   local val="$1"
   [ -z "$val" ] && return
-  printf '%.0f%%' "$val"
+  printf '%.0f' "$val"
 }
 
 _claude_format_color_percent() {
@@ -125,7 +125,7 @@ _claude_format_color_percent() {
     color="$color_low"
   fi
 
-  printf '#[fg=%s]%.0f%%#[default]' "$color" "$val"
+  printf '#[fg=%s]%.0f' "$color" "$val"
 }
 
 _claude_format_cost() {

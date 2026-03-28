@@ -4,7 +4,6 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/scripts/helpers.sh"
 
 FIELD="$CURRENT_DIR/scripts/field.sh"
-USAGE="$CURRENT_DIR/scripts/usage.sh"
 AGE="$CURRENT_DIR/scripts/cache_age.sh"
 EXCEEDS_200K="$CURRENT_DIR/scripts/exceeds_200k.sh"
 
@@ -41,7 +40,6 @@ do_interpolation() {
   done
 
   # Special scripts (not simple field lookups)
-  output="${output//\#\{claude_usage\}/#($USAGE)}"
   output="${output//\#\{claude_cache_age\}/#($AGE)}"
   output="${output//\#\{claude_exceeds_200k\}/#($EXCEEDS_200K)}"
 
