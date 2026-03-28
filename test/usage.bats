@@ -2,9 +2,11 @@
 
 setup() {
   DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." && pwd )"
+  source "$DIR/test/test_helper.bash"
   FIXTURE="$DIR/test/fixtures/sample.json"
   export CLAUDE_USAGE_CACHE="$BATS_TEST_TMPDIR/claude-usage.json"
   cp "$FIXTURE" "$CLAUDE_USAGE_CACHE"
+  stub_tmux
 }
 
 @test "usage: outputs combined format" {
