@@ -1,8 +1,8 @@
-# tmux-claude-usage
+# TMUX Plugin - Claude Code Usage
 
-Tmux plugin that displays [Claude Code](https://claude.ai/code) usage statistics in your tmux status line.
+Show your [Claude Code](https://claude.ai/code) rate limits, cost, and model in your tmux status bar.
 
-Works by caching Claude Code's statusline JSON via a lightweight `tee` wrapper — no API keys, no polling, no disruption to your existing statusline script.
+:detective: MITMs Claude Code's statusline JSON, siphons off the good bits to a cache file, and lets tmux have a peek. Your existing statusline script never suspects a thing.
 
 ## Requirements
 
