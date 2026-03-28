@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# MITM Claude Code statusline JSON: cache it, pipe through to user's command.
+#
+# Usage in ~/.claude/settings.json:
+#   "statusLine": { "type": "command", "command": "claude-usage-tee my-statusline-script" }
+#
+# Without a downstream command, just caches and passes through to stdout:
+#   "statusLine": { "type": "command", "command": "claude-usage-tee" }
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$CURRENT_DIR/../scripts/helpers.sh"
+
+CACHE_FILE=$(_claude_cache_file)
+mkdir -p "$(dirname "$CACHE_FILE")" 2>/dev/null
+
+if [ $# -eq 0 ]; then
+  tee "$CACHE_FILE"
+else
+  tee "$CACHE_FILE" | "$@"
+fi
