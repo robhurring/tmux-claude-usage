@@ -140,6 +140,8 @@ set -g @claude_usage_over_200k "⚠️ "
 set -g status-right '☍ #{claude_5h_color}%%#[default]/#{claude_7d_color}%%#[default]#{claude_exceeds_200k} | %H:%M'
 ```
 
+![Compact](.assets/images/2-compact.png)
+
 ### Compact 2 - Bit more
 
 `Context / 5h / 7d` - out of the way, enough context.
@@ -151,10 +153,8 @@ set -g @claude_usage_color_high "colour1"
 set -g status-right '#[fg=colour208]✻#[default] #{claude_context_color}#{claude_context_percent}%%#[fg=colour242]/#[default]#{claude_5h_color}%%#[fg=colour242]/#[default]#{claude_7d_color}%%#[default] | ...'
 ```
 
-![compactish](.assets/images/5-compact-mine.png)
+![Real-world](.assets/images/5-compact-mine.png)
 
-
-![Compact](.assets/images/2-compact.png)
 
 ### Detailed — model, rates, cost, and context
 
