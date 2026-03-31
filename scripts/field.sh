@@ -9,7 +9,15 @@ expr="$1"
 format="${2:-raw}"
 
 val=$(_claude_read_field "$expr")
-[ -z "$val" ] && exit 0
+
+if [ -z "$val" ]; then
+  case "$format" in
+    percent)       echo "–" ;;
+    color_percent) printf '#[fg=colour242]' ;;
+    *)             exit 0 ;;
+  esac
+  exit 0
+fi
 
 case "$format" in
   percent)       _claude_format_percent "$val" ;;
